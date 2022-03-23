@@ -37,20 +37,27 @@ export const Menu = () => {
     }
   `;
 
-  useEffect(() => {
-    MenuAnimation();
-  });
+  const AnimatedArea = styled("div")`
+    width: 100%;
+    max-width: 50%;
+    height: 100vh;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+  `;
 
   return (
     <>
-      <Menu id={"menu"}>
-        {/* <MenuItem to={"./"}>Home</MenuItem>
+      <Menu>
+        <MenuItem to={"./"}>Home</MenuItem>
         <MenuItem to={"./"}>About</MenuItem>
         <MenuItem to={"./"}>Project</MenuItem>
         <MenuItem to={"./"}>Contact</MenuItem>
 
-        <SocialMedia className={"navbar__social__media"} /> */}
-        <MenuAnimation />
+        <SocialMedia className={"navbar__social__media"} />
+        <AnimatedArea id={"animatedArea"}>
+          <MenuAnimation />
+        </AnimatedArea>
       </Menu>
     </>
   );

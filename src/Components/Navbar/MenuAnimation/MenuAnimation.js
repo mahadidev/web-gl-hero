@@ -1,19 +1,29 @@
 // import modules
+import { Suspense } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
-import * as THREE from "three";
-import { Html, RoundedBox } from "@react-three/drei";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { OrbitControls, CurveModifier } from "@react-three/drei";
+
+function Model() {
+  const gltf = useLoader(GLTFLoader, "./models/drone/scene.gltf");
+  return (
+    <Suspense fallback={null}>
+      <primitive object={gltf.scene} />
+    </Suspense>
+  );
+}
 
 export const MenuAnimation = () => {
   return (
     <>
       <Canvas colorManagement>
-        <ambientLight />
-        <RoundedBox args={[1, 1, 1]} radius={0.05} smoothness={4}>
-          <meshPhongMaterial attach="material" color="#f3f3f3" wireframe />
-        </RoundedBox>
-        <Html>
-          <h1>Hello</h1>
-        </Html>
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 15, 10]} angle={0.3} />
+        <OrbitControls enableZoom={false} />
+
+        <Suspense fallback={false}>
+          <Model />
+        </Suspense>
       </Canvas>
     </>
   );
