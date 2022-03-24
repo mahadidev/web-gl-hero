@@ -1,54 +1,65 @@
 // import modules
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscClose } from "react-icons/vsc";
+import gsap from "gsap";
 
 // import components
 import { Container } from "../Container";
-import { Menu } from "./Menu";
+import { SocialMedia } from "../SocialMedia/SocialMedia";
+import { MenuAnimation } from "./MenuAnimation/MenuAnimation";
+import {
+  Nav,
+  LogoText,
+  MenuIcon,
+  Menu,
+  MenuLeft,
+  MenuItem,
+  AnimatedArea,
+} from "./NavbarStyled";
 
 export const Navbar = () => {
-  const Nav = styled("nav")`
-    width: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 2;
+  // animation
+  const menuRef = useRef();
+  const menuLeftRef = useRef();
+  const menuOpenAnimation = () => {
+    gsap.to(menuRef.current, {
+      duration: 1,
+      "clip-path": "circle(141.7% at 100% 0%)",
+    });
 
-    .navbar__container {
-      display: flex;
-      padding-top: 0.8rem;
-      padding-bottom: 0.8rem;
-      justify-content: space-between;
-      align-items: center;
+    gsap.from(menuLeftRef.current, {
+      duration: 1,
+      delay: 1,
+      y: 100,
+      autoAlpha: 0,
+      stagger: 0.05,
+    });
+  };
+  const menuCloseAnimation = () => {
+    gsap.to(menuRef.current, {
+      duration: 1,
+      "clip-path": "circle(0% at 100% 0%)",
+    });
+  };
+
+  // navbar open-close
+  const [navMenu, setNavMenu] = useState(false);
+
+  useEffect(() => {
+    if (navMenu) {
+      menuOpenAnimation();
+    } else {
+      menuCloseAnimation();
     }
-
-    .navbar__social__media {
-      margin-left: 2rem;
-    }
-  `;
-
-  const LogoText = styled("h2")`
-    color: var(--white-color);
-    font-family: Revamped;
-    font-size: 2rem;
-  `;
-
-  const MenuIcon = styled("span")`
-    display: flex;
-    color: var(--white-color);
-    font-size: 2rem;
-    cursor: pointer;
-  `;
-
-  const [navMenu, setNavMenu] = useState(true);
+  });
 
   return (
     <Nav>
       <Container className={"navbar__container"}>
-        <LogoText>Mahadi Dev</LogoText>
+        <LogoText to={"/"}>Mahadi Dev</LogoText>
         <MenuIcon
           onClick={() => {
             setNavMenu((isOpen) => !isOpen);
@@ -57,8 +68,20 @@ export const Navbar = () => {
           {!navMenu && <BiMenuAltRight />}
           {navMenu && <VscClose />}
         </MenuIcon>
-        {navMenu && <Menu />}
       </Container>
+      <Menu ref={menuRef}>
+        <MenuLeft ref={menuLeftRef}>
+          <MenuItem to={"./"}>Home</MenuItem>
+          <MenuItem to={"./"}>About</MenuItem>
+          <MenuItem to={"./"}>Project</MenuItem>
+          <MenuItem to={"./"}>Contact</MenuItem>
+
+          <SocialMedia className={"navbar__social__media"} />
+        </MenuLeft>
+        <AnimatedArea id={"animatedMenuArea"}>
+          <MenuAnimation />
+        </AnimatedArea>
+      </Menu>
     </Nav>
   );
 };

@@ -1,28 +1,63 @@
 // import modules
-import { Suspense } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { OrbitControls, CurveModifier } from "@react-three/drei";
+import { OrbitControls, Stars, FirstPersonControls } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Suspense, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ArcballControls } from "@react-three/drei";
 
-function Model() {
-  const gltf = useLoader(GLTFLoader, "./models/drone/scene.gltf");
-  return (
-    <Suspense fallback={null}>
-      <primitive object={gltf.scene} />
-    </Suspense>
-  );
-}
+// import component
+import GlobeModel from "./GlobeModel";
 
-export const MenuAnimation = () => {
+const Light = () => {
   return (
     <>
-      <Canvas colorManagement>
-        <ambientLight intensity={0.5} />
-        <spotLight position={[10, 15, 10]} angle={0.3} />
-        <OrbitControls enableZoom={false} />
+      <ambientLight intensity={0.4} />
+      <directionalLight
+        castShadow
+        position={[-8, 16, -8]}
+        intensity={0}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-far={50}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+      />
+      <pointLight position={[0, 50, 0]} intensity={2} />
+    </>
+  );
+};
 
-        <Suspense fallback={false}>
-          <Model />
+export const MenuAnimation = () => {
+  const viewarg = {
+    activeLook: true,
+    autoForward: false,
+    constrainVertical: false,
+    enabled: "Controls/ArcballControls",
+    heightCoef: ArcballControls,
+    heightMax: 1,
+    heightMin: 0,
+    heightSpeed: false,
+    lookVertical: true,
+    lookSpeed: 0.0009,
+    movementSpeed: 1,
+    verticalMax: Math.PI,
+    verticalMin: 0,
+  };
+
+  return (
+    <>
+      <Canvas
+        colorManagement
+        shadowMap
+        camera={{ position: [-5, 4, 4], fov: 20 }}
+      >
+        <OrbitControls />
+        <Light />
+        <Stars rotateSpeed={0.1} />
+        <Suspense fallback={null}>
+          <GlobeModel />
         </Suspense>
       </Canvas>
     </>
