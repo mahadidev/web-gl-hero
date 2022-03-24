@@ -30,22 +30,6 @@ const Light = () => {
 };
 
 export const MenuAnimation = () => {
-  const viewarg = {
-    activeLook: true,
-    autoForward: false,
-    constrainVertical: false,
-    enabled: "Controls/ArcballControls",
-    heightCoef: ArcballControls,
-    heightMax: 1,
-    heightMin: 0,
-    heightSpeed: false,
-    lookVertical: true,
-    lookSpeed: 0.0009,
-    movementSpeed: 1,
-    verticalMax: Math.PI,
-    verticalMin: 0,
-  };
-
   return (
     <>
       <Canvas

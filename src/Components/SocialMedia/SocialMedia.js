@@ -15,10 +15,10 @@ export const SocialMedia = ({ className }) => {
     display: flex;
     align-items: center;
     background: white;
-    margin: 0.5rem;
-    padding: 0.7rem;
-    border-radius: 0.25rem;
-    font-size: 1.5rem;
+    margin: 0.5vw;
+    padding: 0.7vw;
+    border-radius: 0.25vw;
+    font-size: 1.5vw;
     cursor: pointer;
     transition: 0.2s ease-out;
 
@@ -32,6 +32,13 @@ export const SocialMedia = ({ className }) => {
 
     &:last-child {
       margin-right: 0;
+    }
+
+    @media (max-width: 992px) {
+      font-size: 8vw;
+      margin: 2vw;
+      padding: 2vw;
+      border-radius: 2vw;
     }
   `;
 
